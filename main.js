@@ -1,7 +1,5 @@
-var apiKey = "b8df41e2f08c3325"
 var latitude = undefined;
 var longitude = undefined;
-var i =0;
 var tempFlag = "";
 var temp_c=undefined;
 var temp_f=undefined;
@@ -25,23 +23,22 @@ function success(pos) {
   crd = pos.coords;
   longitude = crd.longitude;
   // crd.accuracy
-  latitude = crd.latitude;i
+  latitude = crd.latitude;
   $.ajax({
-      //url:"http://api.wunderground.com/api/b8df41e2f08c3325/geolookup/conditions/q/France/Paris.json",
        url: "http://api.wunderground.com/api/b8df41e2f08c3325/geolookup/conditions/q/"+latitude + "," +longitude + ".json",
-     //  url: "http://api.wunderground.com/api/b8df41e2f08c3325/geolookup/conditions/q/47.5311399,-122.029461-122.029461.json",
      dataType: "jsonp",
      success: function(parsed_json) {
        console.log(parsed_json)
        userLocation = parsed_json['location']['city'];
        temp_f = parsed_json['current_observation']['temp_f'];
        temp_c = parsed_json['current_observation']['temp_c'];
-       var conditions=parsed_json['current_observation']['weather'];
+       var conditions=(parsed_json['current_observation']['weather']);
        var windSpeed=parsed_json['current_observation']['wind_mph'];
        var windDir=parsed_json['current_observation']['wind_dir'];
-       tempFlag="F"; 
-       document.getElementById('temperature').innerHTML = temp_f + " F";
-       document.getElementById('weather').innerHTML = (userLocation + " is currently " + conditions + " with winds at " +windSpeed+ "mph from the " + windDir);
+       tempFlag="F"
+       document.getElementById('icon').innerHTML ="<img src='http://icons.wxug.com/i/c/i/"+conditions.toLowerCase() +".gif'></img>";
+       document.getElementById('temperature').innerHTML =temp_f + " F";
+       document.getElementById('weather').innerHTML = ("Conditions in "+userLocation + ":</br> " + conditions + " with winds at " +windSpeed+ "mph from the " + windDir);
      }
    });
   console.log("geolocations successful", latitude, longitude);
@@ -49,7 +46,12 @@ function success(pos) {
 
 // If something goes wrong getting weather.
 function error(err) {
+  if (error.code == error.PERMISSION_DENIED) {
+        document.getElementById('weather').innerHTML ="Don't you trust me? If you enable locations, I will bring you sweet weather nectars.";
+    }
+  else{
   console.warn('ERROR(' + err.code + '): ' + err.message);
+  document.getElementById('weather').innerHTML ="Something went wrong: "+err.message;}
 };
 
 
