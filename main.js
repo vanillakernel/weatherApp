@@ -2,7 +2,10 @@ var apiKey = "b8df41e2f08c3325"
 var latitude = undefined;
 var longitude = undefined;
 var i =0;
-
+var tempFlag = "";
+var temp_c=undefined;
+var temp_f=undefined;
+var userLocation = undefined;
 // Get their location.
 var options = {
   //enableHighAccuracy: true,
@@ -30,9 +33,15 @@ function success(pos) {
      dataType: "jsonp",
      success: function(parsed_json) {
        console.log(parsed_json)
-       var location = parsed_json['location']['city'];
-       var temp_f = parsed_json['current_observation']['temp_f'];
-       document.getElementById('weather').innerHTML = ("Current temperature in " + location + " is: " + temp_f);
+       userLocation = parsed_json['location']['city'];
+       temp_f = parsed_json['current_observation']['temp_f'];
+       temp_c = parsed_json['current_observation']['temp_c'];
+       var conditions=parsed_json['current_observation']['weather'];
+       var windSpeed=parsed_json['current_observation']['wind_mph'];
+       var windDir=parsed_json['current_observation']['wind_dir'];
+       tempFlag="F"; 
+       document.getElementById('temperature').innerHTML = temp_f + " F";
+       document.getElementById('weather').innerHTML = (userLocation + " is currently " + conditions + " with winds at " +windSpeed+ "mph from the " + windDir);
      }
    });
   console.log("geolocations successful", latitude, longitude);
@@ -48,6 +57,20 @@ function error(err) {
 function sleepFor( sleepDuration ){
     var now = new Date().getTime();
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
+
+function toggleFC (){
+	if (tempFlag=="F"){
+        document.getElementById('temperature').innerHTML = temp_c + " C";
+	tempFlag="C";
+	return
+       }
+
+	if (tempFlag=="C"){
+        document.getElementById('temperature').innerHTML = temp_f + " F";
+	tempFlag="F";
+	return
+       }
 }
 
 

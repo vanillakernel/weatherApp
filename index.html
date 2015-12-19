@@ -12,7 +12,7 @@
 </head>  
 
 <body>
-<div class="container-fluid">
+<div class="container-fluid col-sm-4">
 	<div>	<h1 class=""> That weather <h1> </div>
 			
 <!--<div class="row center-block">
@@ -20,9 +20,12 @@
      <button id="plusButton"class="btn btn-block btn-success btn-lg" onclick="getLocation()" >+1</button>
  </div>
 
- <p><button onclick="geoFindMe()">Show my location</button></p>
- <div id="out"></div>
+--> 
+<p><button onclick="toggleFC()">F/C</button></p>
+<div id="out"></div>
 
+<div class="text-center col-lg-8" id="temperature"><p></br></p></div>
+<!-- 
 
  <div class="col-sm-4">
 	     <button id="minusButton"class="btn btn-block btn-success btn-lg" onclick="minusTime()" >-1</button>
